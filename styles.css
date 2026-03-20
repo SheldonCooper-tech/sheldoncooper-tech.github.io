@@ -17,7 +17,10 @@
 
 body {
   font-family: 'JetBrains Mono', monospace;
-  background: var(--bg-dark);
+  background-image: url('36e4d0b856694fc471344b644a1dd6e4.gif');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
   color: var(--text);
   line-height: 1.6;
 }
