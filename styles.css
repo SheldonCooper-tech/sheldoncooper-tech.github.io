@@ -1,21 +1,25 @@
 :root {
-  --bg-main: #050814;
-  --bg-alt: #0b1020;
-  --card-bg: #111827;
-  --accent: #4fd1c5;
-  --accent-soft: #2c7a7b;
-  --text-main: #f7fafc;
-  --text-muted: #a0aec0;
-  --border-subtle: #2d3748;
-  --error: #fc8181;
-  --success: #48bb78;
-  --radius-lg: 16px;
-  --radius-md: 10px;
-  --radius-sm: 6px;
-  --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.6);
+  /* DnD‑style earthy palette */
+  --bg-main: #1b1517;      /* dungeon stone */
+  --bg-alt: #241c20;
+  --card-bg: #2c2226;
+  --accent: #d1945c;       /* torchlight / whiskey */
+  --accent-soft: #c7a67a;  /* parchment / leather */
+  --accent-dark: #4c3e3e;
+  --text-main: #f5e9d7;    /* parchment text */
+  --text-muted: #c0a892;
+  --border-subtle: #5a4e4e;
+  --error: #ff7b6b;
+  --success: #8fd18b;
+
+  --radius-lg: 0;          /* pixel art = no rounded corners */
+  --radius-md: 0;
+  --radius-sm: 0;
+
+  --shadow-soft: 0 0 0 rgba(0,0,0,0.0); /* мінімум blur, більше «жорстких» ліній */
 }
 
-/* Global reset & base */
+/* Pixel‑art global feel */
 
 *,
 *::before,
@@ -30,11 +34,33 @@ body {
 }
 
 body {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Inter", "Roboto",
+  font-family: "Press Start 2P", system-ui, -apple-system, BlinkMacSystemFont,
     "Segoe UI", sans-serif;
-  background: radial-gradient(circle at top left, #1a202c 0, #050814 50%, #000 100%);
+  /* Якщо немає pixel‑шрифту, можна підключити через <link> до Google Fonts */
+  background:
+    repeating-linear-gradient(
+      45deg,
+      #121013,
+      #121013 4px,
+      #171317 4px,
+      #171317 8px
+    );
   color: var(--text-main);
-  line-height: 1.6;
+  line-height: 1.5;
+  image-rendering: pixelated;
+}
+
+/* Dungeon frame */
+
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  border: 8px solid #3b2f33;
+  outline: 2px solid #000000;
+  z-index: 1;
 }
 
 /* Layout */
@@ -42,6 +68,8 @@ body {
 .container {
   width: min(1120px, 100% - 32px);
   margin: 0 auto;
+  position: relative;
+  z-index: 2;
 }
 
 .section {
@@ -49,14 +77,18 @@ body {
 }
 
 .section-alt {
-  background: rgba(11, 16, 32, 0.9);
+  background:
+    linear-gradient(#241c20, #1b1517);
+  box-shadow: inset 0 0 0 2px #000000;
 }
 
 /* Hero */
 
 .hero {
-  padding: 32px 0 72px;
-  background: radial-gradient(circle at top right, #2d3748 0, #050814 55%, #000 100%);
+  padding: 40px 0 80px;
+  background:
+    radial-gradient(circle at top center, #3b2f33 0, #1b1517 55%, #0b0608 100%);
+  box-shadow: inset 0 0 0 2px #000000;
 }
 
 .hero-content {
@@ -66,56 +98,71 @@ body {
   align-items: stretch;
 }
 
+/* “Pixel” logo / HUD bar */
+
 .logo {
-  font-weight: 600;
-  letter-spacing: 0.08em;
+  display: inline-block;
+  padding: 6px 10px;
+  background: #3b2f33;
+  color: var(--accent-soft);
   text-transform: uppercase;
-  font-size: 13px;
-  color: var(--text-muted);
-  margin-bottom: 16px;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  border: 2px solid #000000;
+  box-shadow:
+    0 0 0 2px #5a4e4e,
+    0 4px 0 #000000;
 }
 
 .hero-text h1 {
-  font-size: clamp(2rem, 4vw, 2.9rem);
-  line-height: 1.1;
-  margin: 0 0 16px;
+  font-size: clamp(1.4rem, 3vw, 1.9rem);
+  line-height: 1.2;
+  margin: 18px 0 12px;
+  text-shadow: 2px 2px 0 #000000;
 }
 
 .subtitle {
-  margin: 0 0 20px;
+  margin: 0 0 16px;
   color: var(--text-muted);
-  max-width: 540px;
+  max-width: 560px;
+  font-size: 0.75rem;
 }
+
+/* Pixel bullet list */
 
 .hero-bullets {
   list-style: none;
   padding: 0;
   margin: 0;
   color: var(--text-main);
+  font-size: 0.7rem;
 }
 
 .hero-bullets li {
   position: relative;
-  padding-left: 20px;
-  margin-bottom: 8px;
-  font-size: 0.98rem;
+  padding-left: 18px;
+  margin-bottom: 6px;
 }
 
 .hero-bullets li::before {
-  content: "•";
+  content: "▶";
   position: absolute;
   left: 0;
   color: var(--accent);
+  text-shadow: 1px 1px 0 #000;
 }
 
-/* Cards / generic */
+/* Cards */
 
 .card {
-  background: linear-gradient(145deg, #111827, #050814);
+  background:
+    linear-gradient(#2c2226, #1b1517);
   border-radius: var(--radius-lg);
-  padding: 20px 20px 22px;
-  box-shadow: var(--shadow-soft);
-  border: 1px solid rgba(148, 163, 184, 0.14);
+  padding: 18px 16px 20px;
+  border: 2px solid #000000;
+  box-shadow:
+    0 0 0 2px var(--border-subtle),
+    0 6px 0 #000000;
 }
 
 .card h2,
@@ -132,137 +179,157 @@ body {
 }
 
 #hero-form h2 {
-  font-size: 1.2rem;
-  margin-bottom: 12px;
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+  text-transform: uppercase;
 }
 
 /* Typography */
 
 h2 {
-  font-size: clamp(1.6rem, 3vw, 2.1rem);
-  margin: 0 0 12px;
+  font-size: 1.1rem;
+  margin: 0 0 10px;
+  text-shadow: 2px 2px 0 #000000;
 }
 
 h3 {
-  font-size: 1.15rem;
-  margin: 0 0 8px;
+  font-size: 0.85rem;
+  margin: 0 0 6px;
 }
 
 .section-intro {
-  margin: 0 0 20px;
+  margin: 0 0 18px;
   max-width: 540px;
   color: var(--text-muted);
-  font-size: 0.98rem;
+  font-size: 0.75rem;
 }
 
 /* Lists */
 
 .list {
   margin: 0;
-  padding-left: 18px;
+  padding-left: 16px;
   color: var(--text-main);
+  font-size: 0.75rem;
 }
 
 .list li {
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 /* Grids / layout helpers */
 
 .cards-grid {
   display: grid;
-  gap: 16px;
+  gap: 14px;
 }
 
 .two-column {
   display: grid;
-  gap: 16px;
+  gap: 14px;
   align-items: start;
 }
 
 .highlight-badge {
-  border-radius: var(--radius-lg);
-  border: 1px solid rgba(79, 209, 197, 0.6);
-  background: radial-gradient(circle at top left, rgba(79, 209, 197, 0.06), #050814);
-  padding: 18px 18px 20px;
+  border-radius: 0;
+  border: 2px solid #000000;
+  box-shadow:
+    0 0 0 2px var(--accent-dark),
+    0 4px 0 #000000;
+  background:
+    repeating-linear-gradient(
+      135deg,
+      #3b2f33,
+      #3b2f33 4px,
+      #4c3e3e 4px,
+      #4c3e3e 8px
+    );
+  padding: 14px 14px 16px;
   color: var(--text-main);
-  font-size: 0.95rem;
+  font-size: 0.75rem;
 }
 
 /* Quotes / founder */
 
 .quote-card {
-  border-left: 3px solid var(--accent);
+  border-left: 4px solid var(--accent);
 }
 
 .quote-text {
   margin: 0;
   font-style: italic;
+  font-size: 0.72rem;
 }
 
 .founder-block {
-  margin-top: 24px;
+  margin-top: 20px;
+  font-size: 0.75rem;
 }
 
 /* Final CTA */
 
 .final-cta-container {
   display: grid;
-  gap: 20px;
+  gap: 18px;
   align-items: start;
 }
 
 /* Forms */
 
 .form-group {
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .form-group label,
 fieldset legend {
   display: block;
   margin-bottom: 4px;
-  font-size: 0.86rem;
+  font-size: 0.7rem;
   color: var(--text-muted);
+  text-transform: uppercase;
 }
 
 input,
 select,
 textarea {
   width: 100%;
-  padding: 9px 10px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-subtle);
-  background: rgba(15, 23, 42, 0.9);
+  padding: 7px 8px;
+  border-radius: 0;
+  border: 2px solid #000000;
+  background: #1b1517;
   color: var(--text-main);
-  font: inherit;
+  font-family: inherit;
+  font-size: 0.75rem;
+  box-shadow: inset 0 0 0 2px #3b2f33;
 }
 
 input:focus,
 select:focus,
 textarea:focus {
-  outline: 2px solid var(--accent);
-  outline-offset: 1px;
-  border-color: transparent;
-  background: #020617;
+  outline: none;
+  box-shadow:
+    inset 0 0 0 2px var(--accent),
+    0 0 0 2px #000000;
+  background: #241c20;
 }
 
 textarea {
   resize: vertical;
-  min-height: 80px;
+  min-height: 72px;
 }
 
 fieldset {
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--border-subtle);
-  padding: 10px 10px 12px;
+  border-radius: 0;
+  border: 2px solid #000000;
+  padding: 8px 10px 10px;
+  box-shadow: inset 0 0 0 2px #3b2f33;
 }
 
 .checkbox-label {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 0.9rem;
+  gap: 4px;
+  font-size: 0.7rem;
   color: var(--text-main);
 }
 
@@ -274,50 +341,57 @@ input[type="checkbox"] {
   width: auto;
 }
 
-/* Buttons */
+/* Buttons – pixel */
 
 .btn {
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  padding: 9px 14px;
-  border-radius: 999px;
-  border: none;
+  padding: 8px 12px;
+  border-radius: 0;
+  border: 2px solid #000000;
   cursor: pointer;
-  font: inherit;
-  font-size: 0.98rem;
-  transition: background 0.18s ease, transform 0.12s ease, box-shadow 0.18s ease;
+  font-family: inherit;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: var(--accent);
+  color: #24130b;
+  box-shadow:
+    0 0 0 2px var(--accent-dark),
+    0 4px 0 #000000;
+  transition: transform 0.08s steps(2, end), box-shadow 0.08s steps(2, end);
 }
 
 .primary-btn {
-  background: linear-gradient(135deg, var(--accent), var(--accent-soft));
-  color: #020617;
-  font-weight: 600;
   width: 100%;
-  box-shadow: 0 12px 26px rgba(79, 209, 197, 0.28);
 }
 
-.primary-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 18px 36px rgba(79, 209, 197, 0.36);
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 0 0 2px var(--accent-dark),
+    0 6px 0 #000000;
 }
 
-.primary-btn:active {
+.btn:active {
   transform: translateY(0);
-  box-shadow: 0 8px 18px rgba(79, 209, 197, 0.26);
+  box-shadow:
+    0 0 0 2px var(--accent-dark),
+    0 2px 0 #000000;
 }
 
 /* Form notes / messages */
 
 .form-note {
   margin: 6px 0 0;
-  font-size: 0.8rem;
+  font-size: 0.65rem;
   color: var(--text-muted);
 }
 
 .form-message {
-  margin-top: 8px;
-  font-size: 0.82rem;
+  margin-top: 6px;
+  font-size: 0.68rem;
 }
 
 .form-message.success {
@@ -331,15 +405,16 @@ input[type="checkbox"] {
 /* Footer */
 
 .site-footer {
-  border-top: 1px solid rgba(45, 55, 72, 0.8);
-  padding: 18px 0 24px;
-  background: #020617;
+  border-top: 2px solid #000000;
+  padding: 16px 0 20px;
+  background: #120d0f;
+  box-shadow: inset 0 0 0 2px #3b2f33;
 }
 
 .footer-content {
   text-align: center;
   color: var(--text-muted);
-  font-size: 0.85rem;
+  font-size: 0.7rem;
 }
 
 /* Responsive */
@@ -348,11 +423,15 @@ input[type="checkbox"] {
   .hero-content {
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
   }
 
   .hero-text {
     max-width: 520px;
+  }
+
+  .hero {
+    padding-top: 50px;
   }
 
   .cards-grid {
@@ -360,25 +439,17 @@ input[type="checkbox"] {
   }
 
   .two-column {
-    grid-template-columns: minmax(0, 2.2fr) minmax(0, 1.2fr);
+    grid-template-columns: minmax(0, 2.1fr) minmax(0, 1.2fr);
   }
 
   .final-cta-container {
-    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1.5fr);
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.5fr);
   }
 }
 
 @media (max-width: 767px) {
   .hero {
-    padding-top: 20px;
-  }
-
-  .card {
-    padding: 18px 16px 20px;
-  }
-
-  .hero-form-wrapper {
-    max-width: 100%;
+    padding-top: 28px;
   }
 
   .cards-grid {
