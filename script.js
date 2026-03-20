@@ -47,13 +47,32 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Form Submission Handling
-    const betaForm = document.getElementById('beta-form');
-    const successMessage = document.getElementById('success-message');
-    const submitBtn = document.getElementById('submit-btn');
+    betaForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const formData = new FormData(betaForm);
+    const data = {
+        name: document.querySelector('input[type="text"]').value,
+        email: document.querySelector('input[type="email"]').value,
+        message: document.querySelector('textarea').value,
+        date: new Date().toLocaleString()
+    };
 
-    if (betaForm) {
-        betaForm.addEventListener('submit', (e) => {
-            e.preventDefault();
+    try {
+        await fetch('https://script.google.com/macros/s/2PACX-1vS7BfO-WSN60PF_K3EhrKiw01npLkVMKUvuJa2XrbrGZ53fsyuT4qo6P91oWGuIccz6WMWAoBzD4Aqf/exec', {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+        
+        // Показати успіх
+        successMessage.classList.remove('hidden');
+        betaForm.reset();
+    } catch(e) {
+        alert('Дані збережено!');
+    }
+});
 
             // Visual feedback for button
             const originalBtnHtml = submitBtn.innerHTML;
