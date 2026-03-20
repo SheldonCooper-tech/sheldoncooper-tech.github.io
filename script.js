@@ -1,25 +1,28 @@
+// Tailwind Configuration (Loaded before CDN)
 window.tailwind = {
     config: {
         theme: {
             extend: {
                 colors: {
-                    finerd: {
-                        black: '#0a0a0a',
-                        darker: '#121212',
-                        dark: '#262626',
-                        accent: '#e2fd52', /* acid/neon yellow */
+                    brand: {
+                        dark: '#0f172a',
+                        primary: '#6366f1',
+                        secondary: '#818cf8',
+                        light: '#e0e7ff',
+                        accent: '#10b981'
                     }
                 },
                 fontFamily: {
                     sans: ['Inter', 'sans-serif'],
-                    mono: ['JetBrains Mono', 'monospace'],
                 }
             }
         }
     }
 };
 
+// Application Logic (Loaded after DOM is ready)
 document.addEventListener('DOMContentLoaded', () => {
+    // Mobile Menu Toggle
     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
     const mobileMenu = document.getElementById('mobile-menu');
     const mobileLinks = document.querySelectorAll('.mobile-link');
@@ -37,8 +40,13 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     mobileMenuBtn.addEventListener('click', toggleMenu);
-    mobileLinks.forEach(link => link.addEventListener('click', toggleMenu));
 
+    // Close mobile menu on link click
+    mobileLinks.forEach(link => {
+        link.addEventListener('click', toggleMenu);
+    });
+
+    // Form Submission Handling
     const betaForm = document.getElementById('beta-form');
     const successMessage = document.getElementById('success-message');
     const submitBtn = document.getElementById('submit-btn');
@@ -47,22 +55,28 @@ document.addEventListener('DOMContentLoaded', () => {
         betaForm.addEventListener('submit', (e) => {
             e.preventDefault();
 
-            const originalBtnText = submitBtn.innerText;
-            submitBtn.innerHTML = 'PROCESSING...';
+            // Visual feedback for button
+            const originalBtnHtml = submitBtn.innerHTML;
+            submitBtn.innerHTML = 'Sending... <i class="fa-solid fa-spinner fa-spin"></i>';
             submitBtn.disabled = true;
-            submitBtn.classList.add('opacity-50');
+            submitBtn.classList.add('opacity-75', 'cursor-not-allowed');
 
+            // Simulate API Call / Network delay
             setTimeout(() => {
+                // Show success message
                 successMessage.classList.remove('hidden');
-                betaForm.reset();
-                submitBtn.innerHTML = originalBtnText;
-                submitBtn.disabled = false;
-                submitBtn.classList.remove('opacity-50');
 
+                // Reset form and button
+                betaForm.reset();
+                submitBtn.innerHTML = originalBtnHtml;
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('opacity-75', 'cursor-not-allowed');
+
+                // Hide success message after 5 seconds
                 setTimeout(() => {
                     successMessage.classList.add('hidden');
-                }, 6000);
-            }, 1200);
+                }, 5000);
+            }, 1000);
         });
     }
 });
